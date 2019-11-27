@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Button,
     ScrollView,
     StyleSheet,
     TouchableOpacity, View,
@@ -130,6 +131,7 @@ class HomeScreen extends React.Component {
                 {/*    icon="plus"*/}
                 {/*    onPress={() => console.log('Pressed')}*/}
                 {/*/>*/}
+                <Button title="Camera" onPress={() => this.props.navigation.navigate('Camera')} />
                 {this.renderFAB()}
             </View>
         );

@@ -12,6 +12,7 @@ class ScannedImageViewScreen extends React.Component {
         const labelData = await firebase.vision().cloudImageLabelerProcessImage(filePath, {
             confidenceThreshold: 0.5,
         });
+        console.log("Labeldata");
 
         console.log(labelData);
     };
