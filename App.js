@@ -1,27 +1,37 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import CameraScreen from './screens/CameraScreen';
-import ScannedImageViewScreen from './screens/ScannedImageViewScreen';
+import {AppRegistry} from 'react-native';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
 
-class HomeScreen extends React.Component {
-  render() {
-      const {navigate} = this.props.navigation;
-    return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Home Screen</Text>
-            <Button title="Camera" onPress={() => navigate('Camera')} />
-        </View>
-    );
-  }
+import AppReducer from './src/reducers';
+import {AppNavigator, middleware} from './src/navigations/AppNavigation';
+import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
+
+const store = createStore(AppReducer, applyMiddleware(middleware));
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'tomato',
+    accent: 'yellow',
+  },
+};
+
+console.disableYellowBox = true;
+
+class StarterApp extends React.Component {
+    render() {
+        return (
+            <Provider store={store} theme={theme}>
+                <PaperProvider>
+                    <AppNavigator/>
+                </PaperProvider>
+            </Provider>
+        );
+    }
 }
 
-const AppNavigator = createStackNavigator({
-  Home: { screen: HomeScreen},
-    Camera: { screen: CameraScreen },
-    ScannedImage: { screen: ScannedImageViewScreen }
+AppRegistry.registerComponent('StarterApp', () => StarterApp);
 
-});
-
-export default createAppContainer(AppNavigator);
+export default StarterApp;
