@@ -17,6 +17,8 @@ import { AppIcon, AppStyles } from "../AppStyles";
 import { Configuration } from "../Configuration";
 import DrawerContainer from "../components/DrawerContainer";
 import WeightInputScreen from '../screens/WeightInputScreen';
+import CameraScreen from '../screens/CameraScreen';
+import ScannedImageViewScreen from '../screens/ScannedImageViewScreen';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -69,7 +71,9 @@ const HomeStack = createStackNavigator(
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: { screen: HomeStack }
+    Home: { screen: HomeStack },
+    Camera: { screen: CameraScreen },
+    ScannedImage: { screen: ScannedImageViewScreen }
   },
   {
     navigationOptions: ({ navigation }) => ({

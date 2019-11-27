@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import CameraScreen from './screens/CameraScreen';
-import ScannedImageViewScreen from './screens/ScannedImageViewScreen';
+import CameraScreen from './src/screens/CameraScreen';
+import ScannedImageViewScreen from './src/screens/ScannedImageViewScreen';
 
 class HomeScreen extends React.Component {
   render() {

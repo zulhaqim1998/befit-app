@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import {connect} from 'react-redux';
 
 class CameraScreen extends PureComponent {
     render() {
@@ -67,4 +68,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CameraScreen;
+const mapStateToProps = state => ({
+    user: state.auth.user,
+});
+
+export default connect(mapStateToProps)(CameraScreen);
