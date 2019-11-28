@@ -1,6 +1,7 @@
 import React from "react";
 import {View} from 'react-native';
 import {Text} from 'react-native-paper';
+import {connect} from 'react-redux';
 
 class WeightInputScreen extends React.Component {
 
@@ -19,5 +20,9 @@ class WeightInputScreen extends React.Component {
     }
 }
 
+const mapStateToProps = state => ({
+    user: state.auth.user,
+});
 
-export default WeightInputScreen;
+export default connect(mapStateToProps)(WeightInputScreen);
+

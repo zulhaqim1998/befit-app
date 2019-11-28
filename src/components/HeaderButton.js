@@ -5,7 +5,7 @@ import { AppIcon, HeaderButtonStyle } from "../AppStyles";
 export default class HeaderButton extends React.Component {
   render() {
     return (
-      <TouchableOpacity style={AppIcon.container} onPress={this.props.onPress}>
+      <TouchableOpacity style={AppIcon.container} onPress={() => this.props.navigation.dispatch({ type: "Logout" })}>
         <Image style={AppIcon.style} source={this.props.icon} />
       </TouchableOpacity>
     );

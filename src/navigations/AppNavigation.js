@@ -54,7 +54,9 @@ const LoginStack = createStackNavigator(
 const HomeStack = createStackNavigator(
   {
     WeightInput: { screen: WeightInputScreen },
-    Home: { screen: HomeScreen }
+    Home: { screen: HomeScreen },
+    Camera: { screen: CameraScreen },
+    ScannedImage: { screen: ScannedImageViewScreen }
   },
   {
     initialRouteName: "Home",
@@ -72,8 +74,6 @@ const HomeStack = createStackNavigator(
 const TabNavigator = createBottomTabNavigator(
   {
     Home: { screen: HomeStack },
-    Camera: { screen: CameraScreen },
-    ScannedImage: { screen: ScannedImageViewScreen }
   },
   {
     navigationOptions: ({ navigation }) => ({

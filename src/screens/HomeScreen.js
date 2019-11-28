@@ -72,9 +72,9 @@ class HomeScreen extends React.Component {
                         icon={this.state.open ? 'star' : 'plus'}
                         actions={[
                             {icon: 'plus', onPress: () => console.log('Pressed add')},
-                            {icon: 'star', label: 'Star', onPress: () => console.log('Pressed star')},
-                            {icon: 'email', label: 'Email', onPress: () => console.log('Pressed email')},
-                            {icon: 'bell', label: 'Remind', onPress: () => console.log('Pressed notifications')},
+                            {icon: 'star', label: 'Breakfast', onPress: () => console.log('Pressed Breakfast')},
+                            {icon: 'email', label: 'Lunch', onPress: () => console.log('Pressed Lunch')},
+                            {icon: 'bell', label: 'Dinner', onPress: () => console.log('Pressed Dinner')}
                         ]}
                         onStateChange={({open}) => this.setState({open})}
                         onPress={() => {
@@ -89,6 +89,7 @@ class HomeScreen extends React.Component {
     }
 
     render() {
+        console.log("Home!!");
         return (
             <View style={styles.container}>
                 {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/}
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     },
     caption: {
         textAlign: 'center',
-        fontSize: 10,
+        fontSize: 9,
     },
 });
 
