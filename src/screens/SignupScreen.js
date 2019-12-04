@@ -33,45 +33,20 @@ class SignupScreen extends React.Component {
     this.authSubscription();
   }
 
-  onRegister = () => {
-    const { email, password } = this.state;
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(response => {
-        const { navigation } = this.props;
-        const { fullname, phone, email } = this.state;
-        const data = {
-          email: email,
-          fullname: fullname,
-          phone: phone,
-          appIdentifier: "rn-android-universal-listings"
-        };
-        let user_uid = response.user._user.uid;
-        console.log("Sucessful, user ID: ", user_uid)
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(user_uid)
-          .set(data);
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(user_uid)
-          .get()
-          .then(function(user) {
-            navigation.dispatch({ type: "Login", user: user });
-          })
-          .catch(function(error) {
-            const { code, message } = error;
-            alert(message);
-          });
-      })
-      .catch(error => {
-        const { code, message } = error;
-        alert(message);
-      });
+
+  goToDataInput = () => {
+    const { email, password, fullname, phone } = this.state;
+    const data = {
+      email: email,
+      fullname: fullname,
+      phone: phone,
+      password: password
+    };
+
+    this.props.navigation.navigate("DataInput", {data})
+
   };
+
 
   render() {
     return (
@@ -121,9 +96,9 @@ class SignupScreen extends React.Component {
         <Button
           containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
           style={styles.facebookText}
-          onPress={() => this.onRegister()}
+          onPress={this.goToDataInput}
         >
-          Sign Up
+          Next
         </Button>
       </View>
     );

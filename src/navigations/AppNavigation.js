@@ -16,9 +16,10 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import { AppIcon, AppStyles } from "../AppStyles";
 import { Configuration } from "../Configuration";
 import DrawerContainer from "../components/DrawerContainer";
-import WeightInputScreen from '../screens/WeightInputScreen';
+import DataInputScreen from '../screens/DataInputScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ScannedImageViewScreen from '../screens/ScannedImageViewScreen';
+import InputMealScreen from '../screens/InputMealScreen';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -36,6 +37,7 @@ const middleware = createReactNavigationReduxMiddleware(
 // login stack
 const LoginStack = createStackNavigator(
   {
+    DataInput: { screen: DataInputScreen },
     Login: { screen: LoginScreen },
     Signup: { screen: SignupScreen },
     Welcome: { screen: WelcomeScreen }
@@ -53,10 +55,10 @@ const LoginStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    WeightInput: { screen: WeightInputScreen },
     Home: { screen: HomeScreen },
     Camera: { screen: CameraScreen },
-    ScannedImage: { screen: ScannedImageViewScreen }
+    ScannedImage: { screen: ScannedImageViewScreen },
+    InputMeal: { screen: InputMealScreen}
   },
   {
     initialRouteName: "Home",

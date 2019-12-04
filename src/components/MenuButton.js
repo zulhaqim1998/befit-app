@@ -16,7 +16,7 @@ export default class MenuButton extends React.Component {
   render() {
     return (
       <TouchableHighlight
-        onPress={() => this.props.navigation.dispatch({ type: "Logout" })}
+        onPress={this.props.onPress}
         style={styles.btnClickContain}
         underlayColor="rgba(128, 128, 128, 0.1)"
       >
