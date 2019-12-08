@@ -11,6 +11,7 @@
     "prepare": "patch-package"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-firebase/app": "^6.0.3",
     "@react-native-firebase/auth": "^6.0.3",
     "@react-native-firebase/firestore": "^6.0.3",
@@ -19,6 +20,7 @@
     "react": "16.8.6",
     "react-native": "0.60.5",
     "react-native-actionsheet": "^2.4.2",
+    "react-native-bottom-action-sheet": "^1.0.3",
     "react-native-button": "^2.4.0",
     "react-native-camera": "^3.6.0",
     "react-native-elements": "^1.2.7",
@@ -30,10 +32,12 @@
     "react-native-maps": "^0.26.1",
     "react-native-modal-selector": "^1.1.2",
     "react-native-paper": "^3.2.1",
+    "react-native-raw-bottom-sheet": "^2.0.6",
     "react-native-reanimated": "^1.2.0",
     "react-native-screens": "1.0.0-alpha.23",
     "react-native-snap-carousel": "^3.8.4",
     "react-native-star-rating": "^1.1.0",
+    "react-native-tab-view": "^2.11.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
     "react-navigation-drawer": "^2.3.3",

@@ -2,7 +2,6 @@ import React from "react";
 import { Animated, Easing, Image, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { createDrawerNavigator } from 'react-navigation-drawer';
-
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {
@@ -16,9 +15,12 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import { AppIcon, AppStyles } from "../AppStyles";
 import { Configuration } from "../Configuration";
 import DrawerContainer from "../components/DrawerContainer";
-import WeightInputScreen from '../screens/WeightInputScreen';
+import DataInputScreen from '../screens/DataInputScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ScannedImageViewScreen from '../screens/ScannedImageViewScreen';
+import InputMealScreen from '../screens/InputMealScreen';
+import {MAIN_COLOR} from '../constants/color';
+import TargetInputScreen from '../screens/TargetInputScreen';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -36,9 +38,11 @@ const middleware = createReactNavigationReduxMiddleware(
 // login stack
 const LoginStack = createStackNavigator(
   {
+    DataInput: { screen: DataInputScreen },
     Login: { screen: LoginScreen },
     Signup: { screen: SignupScreen },
-    Welcome: { screen: WelcomeScreen }
+    Welcome: { screen: WelcomeScreen },
+    TargetInput: { screen: TargetInputScreen }
   },
   {
     initialRouteName: "Welcome",
@@ -53,8 +57,10 @@ const LoginStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    WeightInput: { screen: WeightInputScreen },
-    Home: { screen: HomeScreen }
+    Home: { screen: HomeScreen },
+    Camera: { screen: CameraScreen },
+    ScannedImage: { screen: ScannedImageViewScreen },
+    InputMeal: { screen: InputMealScreen}
   },
   {
     initialRouteName: "Home",
@@ -62,7 +68,7 @@ const HomeStack = createStackNavigator(
 
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: "red",
+      headerTintColor: MAIN_COLOR,
       headerTitleStyle: styles.headerTitleStyle
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
@@ -72,8 +78,6 @@ const HomeStack = createStackNavigator(
 const TabNavigator = createBottomTabNavigator(
   {
     Home: { screen: HomeStack },
-    Camera: { screen: CameraScreen },
-    ScannedImage: { screen: ScannedImageViewScreen }
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -89,7 +93,7 @@ const TabNavigator = createBottomTabNavigator(
         return (
           <Image
             style={{
-              tintColor: focused ? AppStyles.color.tint : AppStyles.color.grey
+              tintColor: focused ? MAIN_COLOR : AppStyles.color.grey
             }}
             source={iconName}
           />

@@ -5,6 +5,7 @@ import { AppStyles } from "../AppStyles";
 import firebase from "@react-native-firebase/app";
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
+import {MAIN_COLOR} from '../constants/color';
 
 
 class SignupScreen extends React.Component {
@@ -33,45 +34,20 @@ class SignupScreen extends React.Component {
     this.authSubscription();
   }
 
-  onRegister = () => {
-    const { email, password } = this.state;
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(response => {
-        const { navigation } = this.props;
-        const { fullname, phone, email } = this.state;
-        const data = {
-          email: email,
-          fullname: fullname,
-          phone: phone,
-          appIdentifier: "rn-android-universal-listings"
-        };
-        let user_uid = response.user._user.uid;
-        console.log("Sucessful, user ID: ", user_uid)
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(user_uid)
-          .set(data);
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(user_uid)
-          .get()
-          .then(function(user) {
-            navigation.dispatch({ type: "Login", user: user });
-          })
-          .catch(function(error) {
-            const { code, message } = error;
-            alert(message);
-          });
-      })
-      .catch(error => {
-        const { code, message } = error;
-        alert(message);
-      });
+
+  goToDataInput = () => {
+    const { email, password, fullname, phone } = this.state;
+    const data = {
+      email: email,
+      fullname: fullname,
+      phone: phone,
+      password: password
+    };
+
+    this.props.navigation.navigate("DataInput", {data})
+
   };
+
 
   render() {
     return (
@@ -121,9 +97,9 @@ class SignupScreen extends React.Component {
         <Button
           containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
           style={styles.facebookText}
-          onPress={() => this.onRegister()}
+          onPress={this.goToDataInput}
         >
-          Sign Up
+          Next
         </Button>
       </View>
     );
@@ -138,7 +114,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: AppStyles.fontSize.title,
     fontWeight: "bold",
-    color: AppStyles.color.tint,
+    color: MAIN_COLOR,
     marginTop: 20,
     marginBottom: 20
   },
@@ -156,7 +132,7 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    backgroundColor: MAIN_COLOR,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
     marginTop: 30
@@ -184,7 +160,7 @@ const styles = StyleSheet.create({
   },
   facebookContainer: {
     width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    backgroundColor: MAIN_COLOR,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
     marginTop: 30
