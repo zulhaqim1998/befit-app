@@ -5,6 +5,7 @@ import { AppStyles } from "../AppStyles";
 import firebase from "@react-native-firebase/app";
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
+import {MAIN_COLOR} from '../constants/color';
 
 
 class SignupScreen extends React.Component {
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: AppStyles.fontSize.title,
     fontWeight: "bold",
-    color: AppStyles.color.tint,
+    color: MAIN_COLOR,
     marginTop: 20,
     marginBottom: 20
   },
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    backgroundColor: MAIN_COLOR,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
     marginTop: 30
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   },
   facebookContainer: {
     width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    backgroundColor: MAIN_COLOR,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
     marginTop: 30

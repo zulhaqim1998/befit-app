@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, TextInput, StyleSheet, Text} from 'react-native';
 import {Divider, ToggleButton, IconButton} from 'react-native-paper';
 import {connect} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -7,6 +7,7 @@ import moment from 'moment';
 import Button from "react-native-button";
 import {AppStyles} from '../AppStyles';
 import firebase from '@react-native-firebase/app';
+import {MAIN_COLOR} from '../constants/color';
 
 
 
@@ -30,49 +31,19 @@ class DataInputScreen extends React.Component {
         };
     }
 
-    onRegister = () => {
-        const { navigation } = this.props;
-        const signupData = navigation.getParam("data");
-        const { weight, height, birthday, gender } = this.state;
+    goToTargetInput = () => {
+        const { email, password, fullname, phone } = this.state;
+        const signupData = this.props.navigation.getParam("data");
+        const data = {
+            email: email,
+            fullname: fullname,
+            phone: phone,
+            password: password,
+            ...signupData
+        };
 
-        const {email, password, fullname, phone} = signupData;
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(response => {
-                const data = {
-                    email: email,
-                    fullname: fullname,
-                    phone: phone,
-                    weight: weight,
-                    height: height,
-                    birthday: moment(birthday).toDate(),
-                    gender: gender
-                };
-                let user_uid = response.user._user.uid;
-                console.log("Sucessful, user ID: ", user_uid)
-                firebase
-                    .firestore()
-                    .collection("users")
-                    .doc(user_uid)
-                    .set(data);
-                firebase
-                    .firestore()
-                    .collection("users")
-                    .doc(user_uid)
-                    .get()
-                    .then(function(user) {
-                        navigation.dispatch({ type: "Login", user: user });
-                    })
-                    .catch(function(error) {
-                        const { code, message } = error;
-                        alert(message);
-                    });
-            })
-            .catch(error => {
-                const { code, message } = error;
-                alert(message);
-            });
+        this.props.navigation.navigate("TargetInput", {data})
+
     };
 
     render() {
@@ -82,15 +53,12 @@ class DataInputScreen extends React.Component {
         return <View style={{flex: 1, backgroundColor: 'white', paddingTop: 50}}>
             <View style={{marginRight: 40, marginLeft: 40}}>
                 <Text style={styles.textLabel}>Weight (kg)</Text>
-                <TextInput //onFocus={this.focusedInput}
+                <TextInput
                     style={styles.input}
                     keyboardType="number-pad"
                     onChangeText={text => this.setState({weight: text})}
-                    ref={c => {
-                        this.textInput = c;
-                    }}
                     value={this.state.weight}
-                    underlineColorAndroid={AppStyles.color.tint}
+                    underlineColorAndroid={MAIN_COLOR}
                     maxLength={5}
                 />
 
@@ -101,17 +69,14 @@ class DataInputScreen extends React.Component {
                     keyboardType="number-pad"
                     onChangeText={text => this.setState({height: text})}
                     value={this.state.height}
-                    ref={c => {
-                        this.textInput = c;
-                    }}
-                    underlineColorAndroid={AppStyles.color.tint}
+                    underlineColorAndroid={MAIN_COLOR}
                     maxLength={5}
                 />
 
                 <Text style={styles.textLabel}>Birthday</Text>
                 <TextInput //onFocus={this.focusedInput}
                     style={styles.input}
-                    underlineColorAndroid={AppStyles.color.tint}
+                    underlineColorAndroid={MAIN_COLOR}
                     onFocus={() => this.setState({showDatePicker: true})}
                     value={birthday ? moment(birthday).format('DD/MM/YYYY') : ''}
                 />
@@ -132,8 +97,8 @@ class DataInputScreen extends React.Component {
                     onValueChange={value => this.setState({gender: value})}
                     value={this.state.gender}
                 >
-                    <ToggleButton style={styles.toggleButton} size={50} color={AppStyles.color.tint} icon="gender-male" value="male"/>
-                    <ToggleButton style={styles.toggleButton} size={50} color={AppStyles.color.tint} icon="gender-female"
+                    <ToggleButton style={styles.toggleButton} size={50} color={MAIN_COLOR} icon="gender-male" value="male"/>
+                    <ToggleButton style={styles.toggleButton} size={50} color={MAIN_COLOR} icon="gender-female"
                                   value="female"/>
                 </ToggleButton.Row>
 
@@ -151,10 +116,10 @@ class DataInputScreen extends React.Component {
             <Button
                 containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
                 style={styles.facebookText}
-                onPress={this.onRegister}
+                onPress={this.goToTargetInput}
                 disabled={isDisabled}
             >
-                Complete Sign Up!
+                Next
             </Button>
         </View>;
     }
@@ -173,7 +138,7 @@ const styles = StyleSheet.create({
         color: '#ff9795',
     },
     textLabel: {
-        color: AppStyles.color.tint,
+        color: MAIN_COLOR,
         fontSize: 18,
         margin: 10,
     },
@@ -187,7 +152,7 @@ const styles = StyleSheet.create({
     },
     facebookContainer: {
         width: AppStyles.buttonWidth.main,
-        backgroundColor: AppStyles.color.tint,
+        backgroundColor: MAIN_COLOR,
         borderRadius: AppStyles.borderRadius.main,
         padding: 10,
         marginTop: 30,

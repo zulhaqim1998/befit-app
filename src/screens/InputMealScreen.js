@@ -7,9 +7,13 @@ import firestore from '@react-native-firebase/firestore';
 import RNBottomActionSheet from 'react-native-bottom-action-sheet';
 import Icon from 'react-native-vector-icons';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import {MAIN_COLOR} from '../constants/color';
 
 
 class InputMealScreen extends React.Component {
+    static navigationOptions = {
+        title: "Meal Input"
+    };
 
     constructor(props) {
         super(props);
@@ -63,12 +67,10 @@ class InputMealScreen extends React.Component {
 
         const foods = [];
         await querySnapshot.forEach((documentSnapshot) => {
-            console.log('User', documentSnapshot.data());
             const data = documentSnapshot.data();
             data.id = documentSnapshot.id;
             foods.push(data);
         });
-        console.log(foods);
         this.setState({foodsData: foods});
 
     };
@@ -77,11 +79,17 @@ class InputMealScreen extends React.Component {
         this.setState({sheetFoodData: foodData, sheetView: true});
     };
 
+
+    // updateMonthlyWActivity = (userId, date, type, calorie) => {
+    //     firestore().collection('users').
+    // };
+
+
     renderFoodsList = () => {
         const {foodsData} = this.state;
 
         if (!foodsData) {
-            return <ActivityIndicator animating={true} color={Colors.red800}/>;
+            return <ActivityIndicator animating={true} color={MAIN_COLOR}/>;
         }
 
 
@@ -101,6 +109,7 @@ class InputMealScreen extends React.Component {
 
     render() {
         const { sheetFoodData } = this.state;
+        console.log(this.props.user);
 
         let facebook = <Icon family={'FontAwesome'} name={'facebook'} color={'#000000'} size={30}/>;
         let instagram = <Icon family={'FontAwesome'} name={'instagram'} color={'#000000'} size={30}/>;
@@ -118,6 +127,7 @@ class InputMealScreen extends React.Component {
             <FAB
                 style={styles.fab}
                 icon="camera"
+                color={'#fff'}
                 onPress={() => this.props.navigation.navigate('Camera')}
             />
 
@@ -126,8 +136,9 @@ class InputMealScreen extends React.Component {
                                                // value is optional
                                                console.log('selection: ' + index + ' ' + value);
                                            }}>
-                <RNBottomActionSheet.SheetView.Item title={'Full plate'} subTitle={'Full Plate'} />
-                <RNBottomActionSheet.SheetView.Item title={'Half late'} subTitle={'Half Plate'} />
+                <RNBottomActionSheet.SheetView.Item title={'Full'} value={1} subTitle={'Full'} />
+                <RNBottomActionSheet.SheetView.Item title={'Half'} value={0.5} subTitle={'Half'} />
+                <RNBottomActionSheet.SheetView.Item title={'Quarter'} value={0.25} subTitle={'Quarter'} />
             </RNBottomActionSheet.SheetView>
 
         </View>;
@@ -144,7 +155,7 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
-        backgroundColor: Colors.red800
+        backgroundColor: MAIN_COLOR
     }
 });
 

@@ -1,0 +1,149 @@
+import React from 'react';
+import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {Chip} from 'react-native-paper';
+import {MAIN_COLOR} from '../constants/color';
+import {AppStyles} from '../AppStyles';
+import Button from 'react-native-button';
+import firebase from '@react-native-firebase/app';
+import moment from 'moment';
+
+class TargetInputScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            targetLoss: '',
+        };
+    }
+
+    onRegister = () => {
+        const {navigation} = this.props;
+        const signupData = navigation.getParam('data');
+        const {targetLoss} = this.state;
+
+        const {
+            email, password, fullname, phone,
+            weight, height, birthday, gender,
+        } = signupData;
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(response => {
+                const data = {
+                    email: email,
+                    fullname: fullname,
+                    phone: phone,
+                    weight: Number(weight),
+                    height: Number(height),
+                    birthday: moment(birthday).toDate(),
+                    gender: gender,
+                    targetLoss: Number(targetLoss),
+                };
+                let user_uid = response.user._user.uid;
+                console.log('Sucessful, user ID: ', user_uid);
+                firebase
+                    .firestore()
+                    .collection('users')
+                    .doc(user_uid)
+                    .set(data);
+                firebase
+                    .firestore()
+                    .collection('users')
+                    .doc(user_uid)
+                    .get()
+                    .then(function (user) {
+                        navigation.dispatch({type: 'Login', user: user});
+                    })
+                    .catch(function (error) {
+                        const {code, message} = error;
+                        alert(message);
+                    });
+            })
+            .catch(error => {
+                const {code, message} = error;
+                alert(message);
+            });
+    };
+
+    render() {
+        const {targetLoss} = this.state;
+
+        const isDisabled = targetLoss === '';
+
+        return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={styles.textLabel}>How much you like to lose in a week?</Text>
+            <View>
+                <Chip style={styles.chip} selected={targetLoss === 0.25}
+                      textStyle={styles.chipText}
+                      mode="outlined" onPress={() => this.setState({targetLoss: 0.25})}>0.25 kg</Chip>
+                <Chip style={styles.chip} selected={targetLoss === 0.5}
+                      textStyle={styles.chipText}
+                      mode="outlined" onPress={() => this.setState({targetLoss: 0.5})}>0.5 kg</Chip>
+                <Chip style={styles.chip} selected={targetLoss === 1.00}
+                      textStyle={styles.chipText}
+                      mode="outlined" onPress={() => this.setState({targetLoss: 1.00})}>1.00 kg</Chip>
+            </View>
+            <Button
+                containerStyle={[styles.facebookContainer, {marginTop: 50}]}
+                style={styles.facebookText}
+                onPress={this.onRegister}
+                disabled={isDisabled}
+            >
+                Complete Sign Up!
+            </Button>
+        </View>;
+    }
+}
+
+
+const styles = StyleSheet.create({
+    input: {
+        height: 60,
+        // borderColor: '#f5f5f5',
+        // borderWidth: 2,
+        borderRadius: 5,
+        marginRight: 30,
+        textAlign: 'center',
+        // backgroundColor: '#ffefeb',
+        fontSize: 30,
+        color: '#ff9795',
+    },
+    textLabel: {
+        color: MAIN_COLOR,
+        fontSize: 18,
+        margin: 10,
+    },
+    divider: {
+        marginTop: 20,
+        marginBottom: 10,
+    },
+    toggleButton: {
+        width: 60,
+        height: 55,
+    },
+    facebookContainer: {
+        width: AppStyles.buttonWidth.main,
+        backgroundColor: MAIN_COLOR,
+        borderRadius: AppStyles.borderRadius.main,
+        padding: 10,
+        marginTop: 30,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    facebookText: {
+        color: AppStyles.color.white,
+    },
+    chip: {
+        paddingTop: 3,
+        paddingBottom: 3,
+        borderColor: MAIN_COLOR,
+        borderWidth: 2,
+        margin: 4,
+    },
+    chipText: {
+        fontSize: 18,
+        paddingRight: 15,
+        textAlign: 'center'
+    }
+});
+
+export default TargetInputScreen;

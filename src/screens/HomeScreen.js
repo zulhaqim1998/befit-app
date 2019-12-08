@@ -1,19 +1,14 @@
 import React from 'react';
-import {
-    Button,
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity, View,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import {connect} from 'react-redux';
-import {Surface, Text, Divider, Caption, Provider, Portal, FAB} from 'react-native-paper';
+import {Caption, Divider, FAB, Portal, Provider, Surface, Text} from 'react-native-paper';
 
-import {
-    AppIcon,
-    AppStyles,
-} from '../AppStyles';
+import {AppIcon, AppStyles} from '../AppStyles';
+import {MAIN_COLOR} from '../constants/color';
+import {getAge, getBMRMen} from '../constants/helper';
+import moment from 'moment';
 
 const textStyle = {
     fontSize: 20,
@@ -61,7 +56,39 @@ class HomeScreen extends React.Component {
         this.props.navigation.setParams({
             menuIcon: this.props.user.profileURL,
         });
+
+        // this.getFoodActivity();
     }
+
+    getGoal = () => {
+        const {user} = this.props;
+        console.log(user);
+
+        const age = getAge(user.birthday);
+        const bmr = getBMRMen(user.weight, user.height, age);
+
+        const goalPercent = user.targetLoss === 0.25 ? 0.9
+            : user.targetLoss === 0.5 ? 0.8 : 0.6;
+
+        return Math.round(bmr * goalPercent);
+    };
+
+    // getFoodActivity = () => {
+    //     let breakfast = 0;
+    //     let lunch = 0;
+    //     let dinner = 0;
+    //     let activity = 0;
+    //
+    //     const {activityRecords} = this.props.user;
+    //     const year = moment().year();
+    //     const month = moment().month();
+    //     const day = moment().date();
+    //
+    //     if(!!activityRecords["2019"]["11"]["8"]) {
+    //         console.log("AAAAAA")
+    //     }
+    //
+    // };
 
     renderFAB() {
         return (
@@ -70,8 +97,10 @@ class HomeScreen extends React.Component {
                     <FAB.Group
                         open={this.state.open}
                         icon={this.state.open ? 'close' : 'plus'}
+                        fabStyle={{backgroundColor: MAIN_COLOR}}
+                        color={'#fff'}
                         actions={[
-                            // {icon: 'plus', onPress: () => console.log('Pressed add')},
+                            {icon: 'plus', label: 'Exercise', onPress: () => console.log('Pressed add')},
                             {icon: 'star', label: 'Breakfast', onPress: () => this.props.navigation.navigate('InputMeal')},
                             {icon: 'email', label: 'Lunch', onPress: () => this.props.navigation.navigate('InputMeal')},
                             {icon: 'bell', label: 'Dinner', onPress: () => this.props.navigation.navigate('InputMeal')}
@@ -89,14 +118,14 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        console.log("Home!!");
+
         return (
             <View style={styles.container}>
                 {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/}
                 <Surface style={styles.surface}>
                     <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 20}}>
                         <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>1995</Text>
+                            <Text style={textStyle}>{this.getGoal()}</Text>
                             <Caption style={styles.caption}>Goal</Caption>
                         </View>
                         <View style={styles.formulaTextContainer}>
@@ -162,6 +191,8 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
+        backgroundColor: MAIN_COLOR,
+        color: '#fff'
     },
     surface: {
         marginTop: 10,

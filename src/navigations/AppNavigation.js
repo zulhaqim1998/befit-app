@@ -2,7 +2,6 @@ import React from "react";
 import { Animated, Easing, Image, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { createDrawerNavigator } from 'react-navigation-drawer';
-
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {
@@ -20,6 +19,8 @@ import DataInputScreen from '../screens/DataInputScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ScannedImageViewScreen from '../screens/ScannedImageViewScreen';
 import InputMealScreen from '../screens/InputMealScreen';
+import {MAIN_COLOR} from '../constants/color';
+import TargetInputScreen from '../screens/TargetInputScreen';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -40,7 +41,8 @@ const LoginStack = createStackNavigator(
     DataInput: { screen: DataInputScreen },
     Login: { screen: LoginScreen },
     Signup: { screen: SignupScreen },
-    Welcome: { screen: WelcomeScreen }
+    Welcome: { screen: WelcomeScreen },
+    TargetInput: { screen: TargetInputScreen }
   },
   {
     initialRouteName: "Welcome",
@@ -66,7 +68,7 @@ const HomeStack = createStackNavigator(
 
     headerLayoutPreset: "center",
     navigationOptions: ({ navigation }) => ({
-      headerTintColor: "red",
+      headerTintColor: MAIN_COLOR,
       headerTitleStyle: styles.headerTitleStyle
     }),
     cardStyle: { backgroundColor: "#FFFFFF" }
@@ -91,7 +93,7 @@ const TabNavigator = createBottomTabNavigator(
         return (
           <Image
             style={{
-              tintColor: focused ? AppStyles.color.tint : AppStyles.color.grey
+              tintColor: focused ? MAIN_COLOR : AppStyles.color.grey
             }}
             source={iconName}
           />

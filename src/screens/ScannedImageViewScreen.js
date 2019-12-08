@@ -5,12 +5,13 @@ import {Card, Title, Button, Avatar, Paragraph, Chip, ActivityIndicator, Colors}
 import vision from '@react-native-firebase/ml-vision';
 import {firebase} from '@react-native-firebase/ml-vision';
 import {AppIcon} from '../AppStyles';
+import {MAIN_COLOR} from '../constants/color';
 
 
 class ScannedImageViewScreen extends React.Component {
 
     static navigationOptions = {
-        title: "Captured Image"
+        title: "Food Image"
     };
 
     constructor(props) {
@@ -38,7 +39,7 @@ class ScannedImageViewScreen extends React.Component {
         const {labelData} = this.state;
 
         if (!labelData.length) {
-            return <ActivityIndicator animating={true} color={Colors.red800}/>;
+            return <ActivityIndicator animating={true} color={MAIN_COLOR}/>;
         }
 
         return <ScrollView>
@@ -52,7 +53,7 @@ class ScannedImageViewScreen extends React.Component {
                                              style={{
                                                  paddingTop: 3,
                                                  paddingBottom: 3,
-                                                 borderColor: "pink",
+                                                 borderColor: MAIN_COLOR,
                                                  borderWidth: 2,
                                                  margin: 4,
                                              }}
