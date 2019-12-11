@@ -49,6 +49,10 @@ class HomeScreen extends React.Component {
         this.state = {
             activeSlide: 0,
             open: false,
+            weight: 0,
+            birthday: 0,
+            height: 0,
+            targetLoss: 0
         };
     }
 
@@ -58,19 +62,32 @@ class HomeScreen extends React.Component {
         });
 
         // this.getFoodActivity();
+        const {weight, birthday, height, targetLoss} = this.props.user;
+        this.setState({
+            weight,
+            birthday,
+            height,
+            targetLoss
+        });
+
+        this.getTodayData();
+
     }
 
     getGoal = () => {
-        const {user} = this.props;
-        console.log(user);
+        const {weight, height, targetLoss, birthday} = this.state;
 
-        const age = getAge(user.birthday);
-        const bmr = getBMRMen(user.weight, user.height, age);
+        const age = getAge(birthday);
+        const bmr = getBMRMen(weight, height, age);
 
-        const goalPercent = user.targetLoss === 0.25 ? 0.9
-            : user.targetLoss === 0.5 ? 0.8 : 0.6;
+        const goalPercent = targetLoss === 0.25 ? 0.9
+            : targetLoss === 0.5 ? 0.8 : 0.6;
 
         return Math.round(bmr * goalPercent);
+    };
+
+    getTodayData = () => {
+        console.log(this.props.user);
     };
 
     // getFoodActivity = () => {

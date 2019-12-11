@@ -82,9 +82,9 @@ class WelcomeScreen extends React.Component {
                                 gender: d.gender,
                                 height: d.height,
                                 weight: d.weight,
-                                targetWeight: d.targetWeight,
+                                targetLoss: d.targetLoss,
                                 phone: d.phone,
-                                activityRecords: d.activities
+                                activityRecords: d.activityRecords
 
                             };
                             if (doc.exists) {

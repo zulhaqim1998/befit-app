@@ -6,7 +6,6 @@ import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import RNBottomActionSheet from 'react-native-bottom-action-sheet';
 import Icon from 'react-native-vector-icons';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import {MAIN_COLOR} from '../constants/color';
 
 
