@@ -21,6 +21,7 @@ import ScannedImageViewScreen from '../screens/ScannedImageViewScreen';
 import InputMealScreen from '../screens/InputMealScreen';
 import {MAIN_COLOR} from '../constants/color';
 import TargetInputScreen from '../screens/TargetInputScreen';
+import AccountManagement from '../screens/AccountManagement';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -78,6 +79,7 @@ const HomeStack = createStackNavigator(
 const TabNavigator = createBottomTabNavigator(
   {
     Home: { screen: HomeStack },
+    AccountManagement: {screen: AccountManagement}
   },
   {
     navigationOptions: ({ navigation }) => ({

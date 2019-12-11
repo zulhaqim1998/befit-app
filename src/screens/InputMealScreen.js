@@ -25,36 +25,6 @@ class InputMealScreen extends React.Component {
         };
     }
 
-    // state = {
-    //     index: 0,
-    //     routes: [
-    //         { key: 'first', title: 'Search Food' },
-    //         { key: 'second', title: 'Capture Food' },
-    //     ],
-    // };
-    //
-    // firstRoute = () => (
-    //     <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
-    // );
-    //
-    // secondRoute = () => (
-    //     <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
-    // );
-
-//     render() {
-//         return (
-//             {/*<TabView*/}
-//             {/*    navigationState={this.state}*/}
-//             {/*    renderScene={SceneMap({*/}
-//             {/*        first: this.firstRoute,*/}
-//             {/*        second: this.secondRoute,*/}
-//             {/*    })}*/}
-//             {/*    onIndexChange={index => this.setState({ index })}*/}
-//             {/*    initialLayout={{ width: Dimensions.get('window').width }}*/}
-//             {/*/>*/}
-//
-//         );
-//     }
 
     componentDidMount() {
         this.getFoods();
@@ -78,10 +48,6 @@ class InputMealScreen extends React.Component {
         this.setState({sheetFoodData: foodData, sheetView: true});
     };
 
-
-    // updateMonthlyWActivity = (userId, date, type, calorie) => {
-    //     firestore().collection('users').
-    // };
 
 
     renderFoodsList = () => {
