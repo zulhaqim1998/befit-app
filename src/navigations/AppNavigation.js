@@ -98,7 +98,15 @@ const TabNavigator = createBottomTabNavigator(
             />
         )
       }},
-    GoalProgression: { screen: GoalProgressionScreen },
+    GoalProgression: { screen: GoalProgressionScreen, navigationOptions: {
+            tabBarLabel:"Goal Diagram",
+            tabBarIcon: ({ tintColor }) => (
+                <Image
+                    style={styles.icon}
+                    source={require('../../assets/images/goal.jpg')}
+                />
+            )
+        }},
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -190,6 +198,5 @@ const styles = StyleSheet.create({
     height:32
   }
 });
-
 
 export { RootNavigator, AppNavigator, middleware };

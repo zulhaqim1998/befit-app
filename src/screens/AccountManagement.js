@@ -62,7 +62,7 @@ class AccountManagement extends React.Component {
                             value={this.state.name}
                             onChangeText={text => this.setState({ name: text })}
                         />
-                        <Text style={styles.labelText}>Name:</Text>
+                        <Text style={styles.labelText}>Email:</Text>
                          <TextInput
                              style={styles.input}
                              placeholder={'Email'}
@@ -71,7 +71,7 @@ class AccountManagement extends React.Component {
                              value={this.state.email}
                              onChangeText={text => this.setState({ name: text })}
                          />
-                        <Text style={styles.labelText}>Name:</Text>
+                        <Text style={styles.labelText}>Phone:</Text>
                          <TextInput
                              style={styles.input}
                              placeholder={'Phone'}
@@ -80,7 +80,7 @@ class AccountManagement extends React.Component {
                              value={this.state.phone}
                              onChangeText={text => this.setState({ name: text })}
                          />
-                        <Text style={styles.labelText}>Name:</Text>
+                        <Text style={styles.labelText}>Weight:</Text>
                          <TextInput
                              style={styles.input}
                              placeholder={'Weight'}
@@ -90,7 +90,7 @@ class AccountManagement extends React.Component {
                              value={this.state.weight}
                              onChangeText={text => this.setState({ name: text })}
                          />
-                        <Text style={styles.labelText}>Name:</Text>
+                        <Text style={styles.labelText}>Height:</Text>
                          <TextInput
                              style={styles.input}
                              placeholder={'Height'}
