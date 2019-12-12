@@ -22,6 +22,7 @@ import InputMealScreen from '../screens/InputMealScreen';
 import {MAIN_COLOR} from '../constants/color';
 import TargetInputScreen from '../screens/TargetInputScreen';
 import AccountManagement from '../screens/AccountManagement';
+import GoalProgressionScreen from '../screens/GoalProgressionScreen';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -96,7 +97,8 @@ const TabNavigator = createBottomTabNavigator(
                 source={require('../../assets/images/person.jpg')}
             />
         )
-      }}
+      }},
+    GoalProgression: { screen: GoalProgressionScreen },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -107,7 +109,7 @@ const TabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         if (routeName === "Home") {
-          // iconName = require('../../assets/images/person.jpg');
+          iconName = AppIcon.images.home;
         }
 
         // You can return any component that you like here! We usually use an
@@ -117,7 +119,7 @@ const TabNavigator = createBottomTabNavigator(
             style={{
               tintColor: focused ? MAIN_COLOR : AppStyles.color.grey
             }}
-            source={require('../../assets/images/person.jpg')}
+            source={iconName}
           />
         );
       }

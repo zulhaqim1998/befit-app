@@ -7,7 +7,7 @@ import {Caption, Divider, FAB, Portal, Provider, Surface, Text} from 'react-nati
 
 import {AppIcon, AppStyles} from '../AppStyles';
 import {MAIN_COLOR} from '../constants/color';
-import {getAge, getBMRMen} from '../constants/helper';
+import {getAge, getBMRMen, getBMRWomen} from '../constants/helper';
 import moment from 'moment';
 
 const textStyle = {
@@ -52,7 +52,12 @@ class HomeScreen extends React.Component {
             weight: 0,
             birthday: 0,
             height: 0,
-            targetLoss: 0
+            targetLoss: 0,
+            foods: 0,
+            balance: 0,
+            exercise: 0,
+            goal: 0,
+            gender: "male"
         };
     }
 
@@ -61,51 +66,57 @@ class HomeScreen extends React.Component {
             menuIcon: this.props.user.profileURL,
         });
 
-        // this.getFoodActivity();
-        const {weight, birthday, height, targetLoss} = this.props.user;
-        this.setState({
-            weight,
-            birthday,
-            height,
-            targetLoss
-        });
+        this.getData();
 
-        this.getTodayData();
-
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            () => {
+                this.getData();
+            }
+        );
     }
 
-    getGoal = () => {
-        const {weight, height, targetLoss, birthday} = this.state;
+    componentWillUnmount() {
+        this.willFocusSubscription.remove();
+    }
+
+    getData = () => {
+        const {weight, birthday, height, targetLoss, gender} = this.props.user;
 
         const age = getAge(birthday);
-        const bmr = getBMRMen(weight, height, age);
+        const bmr = gender === "male" ? getBMRMen(weight, height, age) : getBMRWomen(weight, height, age);
 
         const goalPercent = targetLoss === 0.25 ? 0.9
             : targetLoss === 0.5 ? 0.8 : 0.6;
 
-        return Math.round(bmr * goalPercent);
-    };
+        const goal = Math.round(bmr * goalPercent);
 
-    getTodayData = () => {
-        console.log(this.props.user);
-    };
+        console.log("bmr", bmr);
+        console.log("age", age);
+        console.log("goal", goal);
 
-    // getFoodActivity = () => {
-    //     let breakfast = 0;
-    //     let lunch = 0;
-    //     let dinner = 0;
-    //     let activity = 0;
-    //
-    //     const {activityRecords} = this.props.user;
-    //     const year = moment().year();
-    //     const month = moment().month();
-    //     const day = moment().date();
-    //
-    //     if(!!activityRecords["2019"]["11"]["8"]) {
-    //         console.log("AAAAAA")
-    //     }
-    //
-    // };
+        const {activityRecords} = this.props.user;
+
+        const today = moment();
+        const todayData = activityRecords[today.year()][today.month()][today.date()];
+
+        let dinner = 0;
+        let lunch = 0;
+        let breakfast = 0;
+        let exercise = 0;
+
+        if(!! todayData) {
+            breakfast = !!todayData.breakfast ? todayData.breakfast : 0;
+            lunch = !!todayData.lunch ? todayData.lunch : 0;
+            dinner = !!todayData.dinner ? todayData.dinner : 0;
+            exercise = !!todayData.exercise ? todayData.exercise : 0;
+        }
+
+        const foods = breakfast + lunch + dinner;
+        const balance = goal - foods + exercise;
+
+        this.setState({foods, balance, exercise, goal});
+    };
 
     renderFAB() {
         return (
@@ -117,10 +128,10 @@ class HomeScreen extends React.Component {
                         fabStyle={{backgroundColor: '#9F6AC9'}}
                         color={'#fff'}
                         actions={[
-                            {icon: 'plus', label: 'Exercise', onPress: () => console.log('Pressed add')},
-                            {icon: 'star', label: 'Breakfast', onPress: () => this.props.navigation.navigate('InputMeal')},
-                            {icon: 'email', label: 'Lunch', onPress: () => this.props.navigation.navigate('InputMeal')},
-                            {icon: 'bell', label: 'Dinner', onPress: () => this.props.navigation.navigate('InputMeal')}
+                            {icon: 'plus', label: 'Exercise', onPress: () => console.log('Pressed add', {type: "exercise"})},
+                            {icon: 'star', label: 'Breakfast', onPress: () => this.props.navigation.navigate('InputMeal', {type: "breakfast"})},
+                            {icon: 'email', label: 'Lunch', onPress: () => this.props.navigation.navigate('InputMeal', {type: "lunch"})},
+                            {icon: 'bell', label: 'Dinner', onPress: () => this.props.navigation.navigate('InputMeal', {type: "dinner"})}
                         ]}
                         onStateChange={({open}) => this.setState({open})}
                         onPress={() => {
@@ -135,6 +146,7 @@ class HomeScreen extends React.Component {
     }
 
     render() {
+        const {foods, exercise, balance, goal} = this.state;
 
         return (
             <View style={styles.container}>
@@ -142,7 +154,7 @@ class HomeScreen extends React.Component {
                 <Surface style={styles.surface}>
                     <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 20}}>
                         <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>{this.getGoal()}</Text>
+                            <Text style={textStyle}>{goal}</Text>
                             <Caption style={styles.caption}>Goal</Caption>
                         </View>
                         <View style={styles.formulaTextContainer}>
@@ -150,7 +162,7 @@ class HomeScreen extends React.Component {
                             <Caption></Caption>
                         </View>
                         <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>1001</Text>
+                            <Text style={textStyle}>{foods}</Text>
                             <Caption style={styles.caption}>Food</Caption>
                         </View>
                         <View style={styles.formulaTextContainer}>
@@ -158,7 +170,7 @@ class HomeScreen extends React.Component {
                             <Caption></Caption>
                         </View>
                         <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>400</Text>
+                            <Text style={textStyle}>{exercise}</Text>
                             <Caption style={styles.caption}>Exercise</Caption>
                         </View>
                         <View style={styles.formulaTextContainer}>
@@ -166,7 +178,7 @@ class HomeScreen extends React.Component {
                             <Caption></Caption>
                         </View>
                         <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>1998</Text>
+                            <Text style={textStyle}>{balance}</Text>
                             <Caption style={styles.caption}>Remaining</Caption>
                         </View>
                     </View>
