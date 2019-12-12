@@ -7,6 +7,10 @@ import firestore from '@react-native-firebase/firestore';
 import RNBottomActionSheet from 'react-native-bottom-action-sheet';
 import Icon from 'react-native-vector-icons';
 import {MAIN_COLOR} from '../constants/color';
+import moment from 'moment';
+
+let SheetView = RNBottomActionSheet.SheetView;
+
 
 
 class InputMealScreen extends React.Component {
@@ -48,7 +52,36 @@ class InputMealScreen extends React.Component {
         this.setState({sheetFoodData: foodData, sheetView: true});
     };
 
+    updateMeal = portion => {
+        const {calorie} = this.state.sheetFoodData;
+        const mealType = this.props.navigation.state.params.type;
+        const {id, activityRecords} = this.props.user;
 
+        console.log("PRESSEDDDDDDDD!!!!!!!!!!")
+
+        const today = moment();
+        const month = String(today.month());
+        const year = String(today.year());
+        const day = String(today.date());
+
+        let taken = calorie * portion;
+        const newRecord = {...activityRecords};
+        newRecord[year][month][day] = newRecord[year][month].hasOwnProperty(day) ? newRecord[year][month][day] : {};
+
+        if(newRecord[year][month][day].hasOwnProperty(mealType)) {
+            taken = taken + newRecord[year][month][day][mealType];
+        }
+        newRecord[year][month][day][mealType] = taken;
+
+        firebase.firestore().doc(`users/${id}`).update({
+            activityRecords: newRecord
+        }).catch(e => console.log(e));
+
+        this.setState({sheetFoodData: {}, sheetView: false});
+        this.props.navigation.navigate("Home");
+
+
+    };
 
     renderFoodsList = () => {
         const {foodsData} = this.state;
@@ -74,10 +107,7 @@ class InputMealScreen extends React.Component {
 
     render() {
         const { sheetFoodData } = this.state;
-        console.log(this.props.user);
 
-        let facebook = <Icon family={'FontAwesome'} name={'facebook'} color={'#000000'} size={30}/>;
-        let instagram = <Icon family={'FontAwesome'} name={'instagram'} color={'#000000'} size={30}/>;
 
         return <View style={{flex: 1}}>
             <Searchbar
@@ -93,19 +123,31 @@ class InputMealScreen extends React.Component {
                 style={styles.fab}
                 icon="camera"
                 color={'#fff'}
-                onPress={() => this.props.navigation.navigate('Camera')}
+                onPress={() => this.props.navigation.navigate('Camera', {type: this.props.navigation.state.params.type})}
             />
 
-            <RNBottomActionSheet.SheetView visible={this.state.sheetView} title="Select portion:" theme={'light'}
-                                           onSelection={(index, value) => {
-                                               // value is optional
-                                               console.log('selection: ' + index + ' ' + value);
-                                           }}>
-                <RNBottomActionSheet.SheetView.Item title={'Full'} value={1} subTitle={'Full'} />
-                <RNBottomActionSheet.SheetView.Item title={'Half'} value={0.5} subTitle={'Half'} />
-                <RNBottomActionSheet.SheetView.Item title={'Quarter'} value={0.25} subTitle={'Quarter'} />
-            </RNBottomActionSheet.SheetView>
+            {/*<RNBottomActionSheet.SheetView visible={this.state.sheetView} title="Select portion:" theme={'light'}*/}
+            {/*                               onSelection={(index, value) => console.log(value)}>*/}
+            {/*    <RNBottomActionSheet.SheetView.Item title={'Full'} value={1} subTitle={'Full'} />*/}
+            {/*    <RNBottomActionSheet.SheetView.Item title={'Half'} value={0.5} subTitle={'Half'} />*/}
+            {/*    <RNBottomActionSheet.SheetView.Item title={'Quarter'} value={0.25} subTitle={'Quarter'} />*/}
+            {/*</RNBottomActionSheet.SheetView>*/}
 
+            {this.state.sheetView && SheetView.Show({
+                title: "Select portion:",
+                items: [
+                    { title: "Full", value: 1, subTitle: "Full"},
+                    { title: "Half", value: 0.5, subTitle: "Half" },
+                    { title: "Quarter", value: 0.25, subTitle: "Quarter" },
+                ],
+                theme: "light",
+                selection: 3,
+                onSelection: (index, value) => {
+                    // value is optional
+                    this.updateMeal(value);
+                },
+                onCancel: () => console.log('Closing the bottom SheetView!!!')
+            })}
         </View>;
     }
 }

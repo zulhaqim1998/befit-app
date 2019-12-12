@@ -41,7 +41,7 @@ class CameraScreen extends PureComponent {
         if (this.camera) {
             const options = { quality: 0.5, base64: true };
             const data = await this.camera.takePictureAsync(options);
-            this.props.navigation.navigate('ScannedImage', {imageData: data});
+            this.props.navigation.navigate('ScannedImage', {imageData: data, type: this.props.navigation.state.params.type});
         }
     };
 }

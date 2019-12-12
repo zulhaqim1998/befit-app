@@ -22,6 +22,7 @@ import InputMealScreen from '../screens/InputMealScreen';
 import {MAIN_COLOR} from '../constants/color';
 import TargetInputScreen from '../screens/TargetInputScreen';
 import AccountManagement from '../screens/AccountManagement';
+import GoalProgressionScreen from '../screens/GoalProgressionScreen';
 
 const noTransitionConfig = () => ({
   transitionSpec: {
@@ -79,6 +80,7 @@ const HomeStack = createStackNavigator(
 const TabNavigator = createBottomTabNavigator(
   {
     Home: { screen: HomeStack },
+    GoalProgression: { screen: GoalProgressionScreen },
     AccountManagement: {screen: AccountManagement}
   },
   {
