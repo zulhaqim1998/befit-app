@@ -96,8 +96,7 @@ class TargetInputScreen extends React.Component {
                 <Button
                     containerStyle={styles.facebookContainer}
                     style={styles.facebookText}
-                    onPress={null}
-                    disabled={isDisabled}
+                    onPress={() => this.props.navigation.goBack()}
                 >
                     <Text style={styles.buttonText}>Back</Text>
                 </Button>

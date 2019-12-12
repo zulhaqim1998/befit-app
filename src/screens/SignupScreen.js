@@ -99,7 +99,7 @@ class SignupScreen extends React.Component {
                     <Button
                         containerStyle={styles.facebookContainer}
                         style={styles.facebookText}
-                        onPress={null}>
+                        onPress={() => this.props.navigation.goBack()}>
                         <Text style={styles.buttonText}>Back</Text>
                     </Button>
                     <Button

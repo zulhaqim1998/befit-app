@@ -155,7 +155,7 @@ class LoginScreen extends React.Component {
                         style={styles.loginText}
                         onPress={() => this.onPressLogin()}
                     >
-                        <Text style={styles.buttonText}>Next</Text>
+                        <Text style={styles.buttonText}>Log In !</Text>
                     </Button>
                     <TouchableOpacity
                         onPress={() => this.props.navigation.navigate('Signup')}
