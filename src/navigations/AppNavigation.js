@@ -78,16 +78,36 @@ const HomeStack = createStackNavigator(
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: { screen: HomeStack },
-    AccountManagement: {screen: AccountManagement}
+    Home: { screen: HomeStack, navigationOptions: {
+        tabBarLabel:"Home",
+        tabBarIcon: ({ tintColor }) => (
+            <Image
+                style={styles.icon}
+                source={require('../../assets/images/home.jpg')}
+            />
+        )
+      }},
+
+    AccountManagement: {screen: AccountManagement, navigationOptions: {
+        tabBarLabel:"Profile Page",
+        tabBarIcon: ({ tintColor }) => (
+            <Image
+                style={styles.icon}
+                source={require('../../assets/images/person.jpg')}
+            />
+        )
+      }}
   },
   {
     navigationOptions: ({ navigation }) => ({
+      tabBarOptions: {
+        showIcon: true
+      },
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;
         if (routeName === "Home") {
-          iconName = AppIcon.images.home;
+          // iconName = require('../../assets/images/person.jpg');
         }
 
         // You can return any component that you like here! We usually use an
@@ -97,7 +117,7 @@ const TabNavigator = createBottomTabNavigator(
             style={{
               tintColor: focused ? MAIN_COLOR : AppStyles.color.grey
             }}
-            source={iconName}
+            source={require('../../assets/images/person.jpg')}
           />
         );
       }
@@ -161,7 +181,13 @@ const styles = StyleSheet.create({
     color: "black",
     flex: 1,
     fontFamily: AppStyles.fontName.main
+  },
+  icon: {
+    resizeMode:'stretch',
+    width:32,
+    height:32
   }
 });
+
 
 export { RootNavigator, AppNavigator, middleware };

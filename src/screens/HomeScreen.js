@@ -36,7 +36,7 @@ class HomeScreen extends React.Component {
                         <FastImage
                             style={styles.userPhoto}
                             resizeMode={FastImage.resizeMode.cover}
-                            source={AppIcon.images.defaultUser}
+                            source={require('../../assets/images/person.jpg')}
                         />
                     )}
                 </TouchableOpacity>
@@ -114,7 +114,7 @@ class HomeScreen extends React.Component {
                     <FAB.Group
                         open={this.state.open}
                         icon={this.state.open ? 'close' : 'plus'}
-                        fabStyle={{backgroundColor: MAIN_COLOR}}
+                        fabStyle={{backgroundColor: '#9F6AC9'}}
                         color={'#fff'}
                         actions={[
                             {icon: 'plus', label: 'Exercise', onPress: () => console.log('Pressed add')},
