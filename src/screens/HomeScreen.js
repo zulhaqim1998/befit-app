@@ -68,17 +68,17 @@ class HomeScreen extends React.Component {
 
         this.getData();
 
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            () => {
-                this.getData();
-            }
-        );
+        // this.willFocusSubscription = this.props.navigation.addListener(
+        //     'willFocus',
+        //     () => {
+        //         this.getData();
+        //     }
+        // );
     }
 
-    componentWillUnmount() {
-        this.willFocusSubscription.remove();
-    }
+    // componentWillUnmount() {
+    //     this.willFocusSubscription.remove();
+    // }
 
     getData = () => {
         const {weight, birthday, height, targetLoss, gender} = this.props.user;
@@ -128,7 +128,7 @@ class HomeScreen extends React.Component {
                         fabStyle={{backgroundColor: '#9F6AC9'}}
                         color={'#fff'}
                         actions={[
-                            {icon: 'plus', label: 'Exercise', onPress: () => console.log('Pressed add', {type: "exercise"})},
+                            {icon: 'plus', label: 'Exercise', onPress: () => this.props.navigation.navigate('ExerciseInput')},
                             {icon: 'star', label: 'Breakfast', onPress: () => this.props.navigation.navigate('InputMeal', {type: "breakfast"})},
                             {icon: 'email', label: 'Lunch', onPress: () => this.props.navigation.navigate('InputMeal', {type: "lunch"})},
                             {icon: 'bell', label: 'Dinner', onPress: () => this.props.navigation.navigate('InputMeal', {type: "dinner"})}

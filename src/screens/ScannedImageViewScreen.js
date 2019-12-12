@@ -129,7 +129,7 @@ class ScannedImageViewScreen extends React.Component {
                                                  margin: 4,
                                              }}
                                              onPress={() => this.onFoodPress(food)}
-                >{food.name} ({food.calorie} cal)</Chip>)}
+                >{food.name} ({food.calorie} kcal)</Chip>)}
             </View>
         </ScrollView>;
 
