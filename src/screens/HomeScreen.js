@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import {connect} from 'react-redux';
@@ -57,7 +57,7 @@ class HomeScreen extends React.Component {
             balance: 0,
             exercise: 0,
             goal: 0,
-            gender: "male"
+            gender: 'male',
         };
     }
 
@@ -84,16 +84,16 @@ class HomeScreen extends React.Component {
         const {weight, birthday, height, targetLoss, gender} = this.props.user;
 
         const age = getAge(birthday);
-        const bmr = gender === "male" ? getBMRMen(weight, height, age) : getBMRWomen(weight, height, age);
+        const bmr = gender === 'male' ? getBMRMen(weight, height, age) : getBMRWomen(weight, height, age);
 
         const goalPercent = targetLoss === 0.25 ? 0.9
             : targetLoss === 0.5 ? 0.8 : 0.6;
 
         const goal = Math.round(bmr * goalPercent);
 
-        console.log("bmr", bmr);
-        console.log("age", age);
-        console.log("goal", goal);
+        console.log('bmr', bmr);
+        console.log('age', age);
+        console.log('goal', goal);
 
         const {activityRecords} = this.props.user;
 
@@ -105,7 +105,7 @@ class HomeScreen extends React.Component {
         let breakfast = 0;
         let exercise = 0;
 
-        if(!! todayData) {
+        if (!!todayData) {
             breakfast = !!todayData.breakfast ? todayData.breakfast : 0;
             lunch = !!todayData.lunch ? todayData.lunch : 0;
             dinner = !!todayData.dinner ? todayData.dinner : 0;
@@ -128,10 +128,26 @@ class HomeScreen extends React.Component {
                         fabStyle={{backgroundColor: '#9F6AC9'}}
                         color={'#fff'}
                         actions={[
-                            {icon: 'plus', label: 'Exercise', onPress: () => this.props.navigation.navigate('ExerciseInput')},
-                            {icon: 'star', label: 'Breakfast', onPress: () => this.props.navigation.navigate('InputMeal', {type: "breakfast"})},
-                            {icon: 'email', label: 'Lunch', onPress: () => this.props.navigation.navigate('InputMeal', {type: "lunch"})},
-                            {icon: 'bell', label: 'Dinner', onPress: () => this.props.navigation.navigate('InputMeal', {type: "dinner"})}
+                            {
+                                icon: 'plus',
+                                label: 'Exercise',
+                                onPress: () => console.log('Pressed add', {type: 'exercise'}),
+                            },
+                            {
+                                icon: 'star',
+                                label: 'Breakfast',
+                                onPress: () => this.props.navigation.navigate('InputMeal', {type: 'breakfast'}),
+                            },
+                            {
+                                icon: 'email',
+                                label: 'Lunch',
+                                onPress: () => this.props.navigation.navigate('InputMeal', {type: 'lunch'}),
+                            },
+                            {
+                                icon: 'bell',
+                                label: 'Dinner',
+                                onPress: () => this.props.navigation.navigate('InputMeal', {type: 'dinner'}),
+                            },
                         ]}
                         onStateChange={({open}) => this.setState({open})}
                         onPress={() => {
@@ -158,12 +174,13 @@ class HomeScreen extends React.Component {
                 {mealRecord && mealRecord.map((food, index) =>
                     <List.Item title={food.name} left={() => <List.Item title={food.name}
                                                                         key={index}
-                                                                        // description="Item description"
+                        // description="Item description"
                                                                         titleStyle={{textTransform: 'capitalize'}}
-                                                                        // right={props => <Text>{food.calorie}</Text>}
-                                                                        left={props => <Avatar.Image size={50} source={{uri: food.imageUrl}}/>}
+                        // right={props => <Text>{food.calorie}</Text>}
+                                                                        left={props => <Avatar.Image size={50}
+                                                                                                     source={{uri: food.imageUrl}}/>}
                     />}
-                />)}
+                    />)}
             </List.Section>
         );
     };
@@ -174,44 +191,49 @@ class HomeScreen extends React.Component {
         return (
             <ScrollView style={styles.container}>
                 {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/}
+
                 <Surface style={styles.surface}>
-                    <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 20}}>
-                        <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>{goal}</Text>
-                            <Caption style={styles.caption}>Goal</Caption>
+                    <ImageBackground
+                        style={styles.backgroundContainer}
+                        source={require('../../assets/images/bg5.jpg')}>
+                        <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 20}}>
+                            <View style={styles.formulaTextContainer}>
+                                <Text style={textStyle}>{goal}</Text>
+                                <Caption style={styles.caption}>Goal</Caption>
+                            </View>
+                            <View style={styles.formulaTextContainer}>
+                                <Text style={textStyle}>-</Text>
+                                <Caption></Caption>
+                            </View>
+                            <View style={styles.formulaTextContainer}>
+                                <Text style={textStyle}>{foods}</Text>
+                                <Caption style={styles.caption}>Food</Caption>
+                            </View>
+                            <View style={styles.formulaTextContainer}>
+                                <Text style={textStyle}>+</Text>
+                                <Caption></Caption>
+                            </View>
+                            <View style={styles.formulaTextContainer}>
+                                <Text style={textStyle}>{exercise}</Text>
+                                <Caption style={styles.caption}>Exercise</Caption>
+                            </View>
+                            <View style={styles.formulaTextContainer}>
+                                <Text style={textStyle}>=</Text>
+                                <Caption></Caption>
+                            </View>
+                            <View style={styles.formulaTextContainer}>
+                                <Text style={textStyle}>{balance}</Text>
+                                <Caption style={styles.caption}>Remaining</Caption>
+                            </View>
                         </View>
-                        <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>-</Text>
-                            <Caption></Caption>
-                        </View>
-                        <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>{foods}</Text>
-                            <Caption style={styles.caption}>Food</Caption>
-                        </View>
-                        <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>+</Text>
-                            <Caption></Caption>
-                        </View>
-                        <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>{exercise}</Text>
-                            <Caption style={styles.caption}>Exercise</Caption>
-                        </View>
-                        <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>=</Text>
-                            <Caption></Caption>
-                        </View>
-                        <View style={styles.formulaTextContainer}>
-                            <Text style={textStyle}>{balance}</Text>
-                            <Caption style={styles.caption}>Remaining</Caption>
-                        </View>
-                    </View>
+                    </ImageBackground>
                     <Divider/>
                     {/*<View>*/}
-                        {this.renderMealToday("Breakfast")}
-                        <Divider/>
-                        {this.renderMealToday("Lunch")}
-                        <Divider/>
-                        {this.renderMealToday("Dinner")}
+                    {this.renderMealToday('Breakfast')}
+                    <Divider/>
+                    {this.renderMealToday('Lunch')}
+                    <Divider/>
+                    {this.renderMealToday('Dinner')}
                     {/*</View>*/}
                 </Surface>
                 {/*<FAB*/}
@@ -227,6 +249,11 @@ class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    backgroundContainer: {
+        flex: 1,
+        width: null,
+        alignItems: 'center',
+    },
     container: {
         backgroundColor: '#f5f5f5',
         flex: 1,
@@ -251,7 +278,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         backgroundColor: MAIN_COLOR,
-        color: '#fff'
+        color: '#fff',
     },
     surface: {
         marginTop: 10,
