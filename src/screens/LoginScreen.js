@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {Dimensions, ImageBackground, StyleSheet, Text, TextInput, View, TouchableOpacity} from 'react-native';
 import Button from 'react-native-button';
 import {AppStyles} from '../AppStyles';
 import firebase from '@react-native-firebase/app';
@@ -11,7 +11,14 @@ import {MAIN_COLOR} from '../constants/color';
 // const FBSDK = require("react-native-fbsdk");
 // const { LoginManager, AccessToken } = FBSDK;
 
+const {width: WIDTH} = Dimensions.get('window');
+
 class LoginScreen extends React.Component {
+
+    static navigationOptions = {
+        header: null,
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -121,50 +128,89 @@ class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
-                <View style={styles.InputContainer}>
+            <ImageBackground
+                style={styles.backgroundContainer}
+                source={require('../../assets/images/bg1.jpg')}>
+                <View style={styles.container}>
+                    <Text style={styles.toptittle}>Log in to Your Account!</Text>
                     <TextInput
-                        style={styles.body}
-                        placeholder="E-mail or phone number"
+                        style={styles.input}
+                        placeholder="Email"
+                        placeholderTextColor={'rgba(255,255,255, 0.7)'}
+                        underlineColorAndroid="transparent"
                         onChangeText={text => this.setState({email: text})}
                         value={this.state.email}
-                        placeholderTextColor={AppStyles.color.grey}
-                        underlineColorAndroid="transparent"
                     />
-                </View>
-                <View style={styles.InputContainer}>
                     <TextInput
-                        style={styles.body}
-                        secureTextEntry={true}
+                        style={styles.input}
                         placeholder="Password"
+                        placeholderTextColor={'rgba(255,255,255, 0.7)'}
+                        underlineColorAndroid="transparent"
+                        secureTextEntry={true}
                         onChangeText={text => this.setState({password: text})}
                         value={this.state.password}
-                        placeholderTextColor={AppStyles.color.grey}
-                        underlineColorAndroid="transparent"
                     />
+                    <Button
+                        containerStyle={[styles.facebookContainer, {marginTop: 10}]}
+                        style={styles.loginText}
+                        onPress={() => this.onPressLogin()}
+                    >
+                        <Text style={styles.buttonText}>Next</Text>
+                    </Button>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('Signup')}
+                        style={styles.TO}
+                    >
+                        <Text style={{color: '#fcff72',fontWeight:'bold'}}>Don't have an account ?</Text>
+                    </TouchableOpacity>
                 </View>
-                <Button
-                    containerStyle={styles.loginContainer}
-                    style={styles.loginText}
-                    onPress={() => this.onPressLogin()}
-                >
-                    Log in
-                </Button>
-                {/*<Text style={styles.or}>OR</Text>*/}
-                {/*<Button*/}
-                {/*    containerStyle={styles.facebookContainer}*/}
-                {/*    style={styles.facebookText}*/}
-                {/*    // onPress={() => this.onPressFacebook()}*/}
-                {/*>*/}
-                {/*    Login with Facebook*/}
-                {/*</Button>*/}
-            </View>
+            </ImageBackground>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    TO: {
+        marginTop: 10,
+        color: '#83DEDB',
+    },
+    toptittle: {
+        color: 'rgba(255,255,255,1)',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 40,
+        marginBottom: 60,
+        fontWeight: 'bold',
+        fontSize: 35,
+        fontFamily: 'sans-serif-condensed',
+    },
+    buttonText: {
+        color: 'rgba(255,255,255,0.7)',
+        paddingLeft: 40,
+        paddingRight: 40,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    input: {
+        width: WIDTH - 55,
+        height: 40,
+        borderRadius: 25,
+        fontSize: 14,
+        marginTop: 15,
+        paddingLeft: 45,
+        backgroundColor: 'rgba(0,0,0,0.35)',
+        color: 'rgba(255,255,255,0.7)',
+        marginHorizontal: 25,
+    },
+    backgroundContainer: {
+        flex: 1,
+        width: null,
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -223,11 +269,15 @@ const styles = StyleSheet.create({
         color: AppStyles.color.text,
     },
     facebookContainer: {
-        width: AppStyles.buttonWidth.main,
-        backgroundColor: AppStyles.color.facebook,
+        width: WIDTH - 85,
+        height: 35,
+        backgroundColor: '#9F6AC9',
+        color: '#9F6AC9',
         borderRadius: AppStyles.borderRadius.main,
         padding: 10,
         marginTop: 30,
+        marginRight: 'auto',
+        marginLeft: 'auto',
     },
     facebookText: {
         color: AppStyles.color.white,

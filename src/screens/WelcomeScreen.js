@@ -1,13 +1,15 @@
 import React from 'react';
 import Button from 'react-native-button';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ImageBackground, Image, Dimensions} from 'react-native';
 import {AppStyles} from '../AppStyles';
 import {AsyncStorage, ActivityIndicator} from 'react-native';
 // import firebase from "@react-native-firebase/app";
 import {firebase} from '@react-native-firebase/auth';
 import {MAIN_COLOR} from '../constants/color';
+import {Avatar} from 'react-native-paper';
 
 
+const {width: WIDTH} = Dimensions.get('window');
 class WelcomeScreen extends React.Component {
     static navigationOptions = {
         header: null,
@@ -32,23 +34,30 @@ class WelcomeScreen extends React.Component {
             );
         }
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Be Fit Fitness App</Text>
-                <Button
-                    containerStyle={styles.loginContainer}
-                    style={styles.loginText}
-                    onPress={() => this.props.navigation.navigate('Login')}
-                >
-                    Log In
-                </Button>
-                <Button
-                    containerStyle={styles.signupContainer}
-                    style={styles.signupText}
-                    onPress={() => this.props.navigation.navigate('Signup')}
-                >
-                    Sign Up
-                </Button>
-            </View>
+            <ImageBackground
+                style={styles.backgroundContainer}
+                source={require('../../assets/images/bg2.jpg')}>
+                <View style={styles.container}>
+                    <Image
+                        style={styles.image}
+                        source={require('../../assets/images/font.png')} />
+
+                    <Button
+                        containerStyle={styles.loginContainer}
+                        style={styles.loginText}
+                        onPress={() => this.props.navigation.navigate('Login')}
+                    >
+                        Log In
+                    </Button>
+                    <Button
+                        containerStyle={styles.signupContainer}
+                        style={styles.signupText}
+                        onPress={() => this.props.navigation.navigate('Signup')}
+                    >
+                        Sign Up
+                    </Button>
+                </View>
+            </ImageBackground>
         );
     }
 
@@ -140,6 +149,18 @@ class WelcomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    backgroundContainer: {
+        flex: 1,
+        width: null,
+        alignItems: 'center',
+    },
+    image: {
+        resizeMode:'contain',
+        width:WIDTH-55,
+        marginTop:-100,
+        marginBottom:-40
+
+    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -161,26 +182,25 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     loginContainer: {
-        width: AppStyles.buttonWidth.main,
-        backgroundColor: MAIN_COLOR, // AppStyles.color.tint,
+        width: WIDTH - 125,
+        backgroundColor: '#9F6AC9',
         borderRadius: AppStyles.borderRadius.main,
         padding: 10,
-        marginTop: 30,
     },
     loginText: {
         color: AppStyles.color.white,
     },
     signupContainer: {
-        width: AppStyles.buttonWidth.main,
+        width: WIDTH - 125,
         backgroundColor: AppStyles.color.white,
         borderRadius: AppStyles.borderRadius.main,
         padding: 8,
         borderWidth: 1,
-        borderColor: MAIN_COLOR,
+        borderColor: '#9F6AC9',
         marginTop: 15,
     },
     signupText: {
-        color: MAIN_COLOR,
+        color: '#9F6AC9',
     },
     spinner: {
         marginTop: 200,

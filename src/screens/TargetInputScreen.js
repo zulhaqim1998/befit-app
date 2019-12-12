@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {View, TextInput, StyleSheet, Text, ImageBackground, Dimensions} from 'react-native';
 import {Chip} from 'react-native-paper';
 import {MAIN_COLOR} from '../constants/color';
 import {AppStyles} from '../AppStyles';
@@ -7,7 +7,13 @@ import Button from 'react-native-button';
 import firebase from '@react-native-firebase/app';
 import moment from 'moment';
 
+const {width: WIDTH} = Dimensions.get('window')
 class TargetInputScreen extends React.Component {
+
+    static navigationOptions = {
+        header: null,
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -69,33 +75,75 @@ class TargetInputScreen extends React.Component {
 
         const isDisabled = targetLoss === '';
 
-        return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={styles.textLabel}>How much you like to lose in a week?</Text>
+        return(
+        <ImageBackground
+            style={styles.backgroundContainer}
+            source={require('../../assets/images/bg1.jpg')}>
             <View>
-                <Chip style={styles.chip} selected={targetLoss === 0.25}
-                      textStyle={styles.chipText}
-                      mode="outlined" onPress={() => this.setState({targetLoss: 0.25})}>0.25 kg</Chip>
-                <Chip style={styles.chip} selected={targetLoss === 0.5}
-                      textStyle={styles.chipText}
-                      mode="outlined" onPress={() => this.setState({targetLoss: 0.5})}>0.5 kg</Chip>
-                <Chip style={styles.chip} selected={targetLoss === 1.00}
-                      textStyle={styles.chipText}
-                      mode="outlined" onPress={() => this.setState({targetLoss: 1.00})}>1.00 kg</Chip>
+                <Text style={styles.toptittle}>Create new account</Text>
+                <Text style={styles.textLabel}>How much you like to lose in a week?</Text>
+                <View>
+                    <Chip style={styles.chip} selected={targetLoss === 0.25}
+                          textStyle={styles.chipText}
+                          mode="outlined" onPress={() => this.setState({targetLoss: 0.25})}>0.25 kg</Chip>
+                    <Chip style={styles.chip} selected={targetLoss === 0.5}
+                          textStyle={styles.chipText}
+                          mode="outlined" onPress={() => this.setState({targetLoss: 0.5})}>0.5 kg</Chip>
+                    <Chip style={styles.chip} selected={targetLoss === 1.00}
+                          textStyle={styles.chipText}
+                          mode="outlined" onPress={() => this.setState({targetLoss: 1.00})}>1.00 kg</Chip>
+                </View>
+                <Button
+                    containerStyle={styles.facebookContainer}
+                    style={styles.facebookText}
+                    onPress={null}
+                    disabled={isDisabled}
+                >
+                    <Text style={styles.buttonText}>Back</Text>
+                </Button>
+                <Button
+                    containerStyle={[styles.facebookContainer, { marginTop: 10 }]}
+                    style={styles.facebookText}
+                    onPress={this.onRegister}
+                    disabled={isDisabled}
+                >
+                    <Text style={styles.buttonText}>Complete Sign Up!</Text>
+                </Button>
+
             </View>
-            <Button
-                containerStyle={[styles.facebookContainer, {marginTop: 50}]}
-                style={styles.facebookText}
-                onPress={this.onRegister}
-                disabled={isDisabled}
-            >
-                Complete Sign Up!
-            </Button>
-        </View>;
+        </ImageBackground>
+        );
     }
 }
 
 
 const styles = StyleSheet.create({
+    backgroundContainer:{
+        flex:1,
+        width: null,
+        alignItems:'center',
+    },
+    buttonText:{
+        color: 'rgba(255,255,255,0.7)',
+        paddingLeft:40,
+        paddingRight:40,
+        marginLeft:'auto',
+        marginRight:'auto',
+        marginTop:'auto',
+        marginBottom:'auto',
+        fontWeight:'bold',
+        fontSize:16
+    },
+    toptittle:{
+        color: 'rgba(255,255,255,1)',
+        marginLeft:'auto',
+        marginRight:'auto',
+        marginTop:30,
+        marginBottom:20,
+        fontWeight:'bold',
+        fontSize:35,
+        fontFamily: 'sans-serif-condensed'
+    },
     input: {
         height: 60,
         // borderColor: '#f5f5f5',
@@ -108,9 +156,10 @@ const styles = StyleSheet.create({
         color: '#ff9795',
     },
     textLabel: {
-        color: MAIN_COLOR,
+        color: 'rgba(255,255,255,0.85)',
         fontSize: 18,
-        margin: 10,
+        marginTop: 55,
+        marginBottom: 15
     },
     divider: {
         marginTop: 20,
@@ -121,13 +170,15 @@ const styles = StyleSheet.create({
         height: 55,
     },
     facebookContainer: {
-        width: AppStyles.buttonWidth.main,
-        backgroundColor: MAIN_COLOR,
+        width: WIDTH-85,
+        height:35,
+        backgroundColor: '#9F6AC9',
+        color:'#9F6AC9',
         borderRadius: AppStyles.borderRadius.main,
         padding: 10,
         marginTop: 30,
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        marginRight:'auto',
+        marginLeft:'auto'
     },
     facebookText: {
         color: AppStyles.color.white,
