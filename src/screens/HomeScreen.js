@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import {connect} from 'react-redux';
-import {Caption, Divider, FAB, Portal, Provider, Surface, Text} from 'react-native-paper';
+import {Caption, Divider, FAB, Portal, Provider, Surface, Text, List, Avatar} from 'react-native-paper';
 
 import {AppIcon, AppStyles} from '../AppStyles';
 import {MAIN_COLOR} from '../constants/color';
@@ -145,11 +145,34 @@ class HomeScreen extends React.Component {
         );
     }
 
+    renderMealToday = (type) => {
+
+        const today = moment();
+        const mealRecord = this.props.user
+            .activityRecords[today.year()][today.month()][today.date()][`${type.toLowerCase()}Record`];
+
+        return (
+            <List.Section>
+                <List.Subheader>{type}</List.Subheader>
+                {!mealRecord && <Text style={{marginLeft: 30}}>No record.</Text>}
+                {mealRecord && mealRecord.map((food, index) =>
+                    <List.Item title={food.name} left={() => <List.Item title={food.name}
+                                                                        key={index}
+                                                                        // description="Item description"
+                                                                        titleStyle={{textTransform: 'capitalize'}}
+                                                                        // right={props => <Text>{food.calorie}</Text>}
+                                                                        left={props => <Avatar.Image size={50} source={{uri: food.imageUrl}}/>}
+                    />}
+                />)}
+            </List.Section>
+        );
+    };
+
     render() {
         const {foods, exercise, balance, goal} = this.state;
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/}
                 <Surface style={styles.surface}>
                     <View style={{flexDirection: 'row', marginBottom: 20, marginTop: 20}}>
@@ -183,6 +206,13 @@ class HomeScreen extends React.Component {
                         </View>
                     </View>
                     <Divider/>
+                    {/*<View>*/}
+                        {this.renderMealToday("Breakfast")}
+                        <Divider/>
+                        {this.renderMealToday("Lunch")}
+                        <Divider/>
+                        {this.renderMealToday("Dinner")}
+                    {/*</View>*/}
                 </Surface>
                 {/*<FAB*/}
                 {/*    style={styles.fab}*/}
@@ -191,7 +221,7 @@ class HomeScreen extends React.Component {
                 {/*    onPress={() => console.log('Pressed')}*/}
                 {/*/>*/}
                 {this.renderFAB()}
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -226,8 +256,8 @@ const styles = StyleSheet.create({
     surface: {
         marginTop: 10,
         minHeight: 200,
-        marginLeft: 6,
-        marginRight: 6,
+        // marginLeft: 6,
+        // marginRight: 6,
         // elevation: 4,
         // justifyContent: "center",
         // alignItems: "center",

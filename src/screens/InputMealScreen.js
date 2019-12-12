@@ -57,12 +57,12 @@ class InputMealScreen extends React.Component {
         const mealType = this.props.navigation.state.params.type;
         const {id, activityRecords} = this.props.user;
 
-        console.log("PRESSEDDDDDDDD!!!!!!!!!!")
-
         const today = moment();
         const month = String(today.month());
         const year = String(today.year());
         const day = String(today.date());
+
+        let mealRecord = [];
 
         let taken = calorie * portion;
         const newRecord = {...activityRecords};
@@ -70,8 +70,15 @@ class InputMealScreen extends React.Component {
 
         if(newRecord[year][month][day].hasOwnProperty(mealType)) {
             taken = taken + newRecord[year][month][day][mealType];
+            mealRecord = newRecord[year][month][day][`${mealType}Record`];
         }
+        if(newRecord[year][month][day].hasOwnProperty(`${mealType}Record`)) {
+            mealRecord = newRecord[year][month][day][`${mealType}Record`];
+        }
+
         newRecord[year][month][day][mealType] = taken;
+        mealRecord.push(this.state.sheetFoodData);
+        newRecord[year][month][day][`${mealType}Record`] = mealRecord;
 
         firebase.firestore().doc(`users/${id}`).update({
             activityRecords: newRecord
